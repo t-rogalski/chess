@@ -11,3 +11,5 @@
 - do interakcji: React, JavaScript,
 - do wizualizacji szachownicy i ruchów, biblioteki react-chessboard i Chess.js,
 - do analizy partii - Stockfish.js.
+
+[Przejdź do strony](https://szachyprojekt.netlify.app/)
