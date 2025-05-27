@@ -4,12 +4,7 @@ import { Chessboard } from "react-chessboard";
 import "./App.css";
 
 const Button = ({ children, ...props }) => (
-  <button
-    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-    {...props}
-  >
-    {children}
-  </button>
+  <button {...props}>{children}</button>
 );
 
 export default function App() {
@@ -55,7 +50,7 @@ export default function App() {
 
   if (!gameMode) {
     return (
-      <div className="flex">
+      <div className="mode-selection">
         <Button onClick={() => resetGame("local")}>Gra lokalna</Button>
         <Button onClick={() => resetGame("vsComputer")}>
           Gra z komputerem

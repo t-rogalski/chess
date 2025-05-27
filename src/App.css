@@ -1,8 +1,11 @@
 body {
-  max-height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: #0f0f24;
 }
 
 .container {
@@ -26,12 +29,21 @@ body {
   padding: 0 2rem;
 }
 
+.right-panel > div > h2 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .table-container {
   align-self: top;
   max-height: 650px;
   overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
+  border: 3px solid #ddd;
+  border-radius: 0.5rem;
+  color: #ddd;
+  background-color: transparent;
+  font-size: 1.1rem;
 }
 
 table {
