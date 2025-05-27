@@ -1,9 +1,23 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import { createRoot } from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import App from "./App.jsx";
+import ChessGame from "./components/ChessGame.jsx";
+import "./App.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/game/:mode",
+    element: <ChessGame />,
+  },
+]);
+
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
