@@ -8,6 +8,11 @@ body {
   background-color: #0f0f24;
 }
 
+button:disabled {
+  background-color: #6c757d;
+  cursor: default;
+}
+
 .container {
   display: flex;
   padding: 1rem;

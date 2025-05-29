@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import MoveHistory from "./MoveHistory";
@@ -11,6 +11,9 @@ export default function ChessGame() {
   const [fen, setFen] = useState("start");
   const [history, setHistory] = useState([]);
   const [orientation, setOrientation] = useState("white");
+  const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
+  const [fenList, setFenList] = useState(["start"]);
+
   const [autoOrientation, setAutoOrientation] = useState(
     mode === "local" ? true : false,
   );
@@ -19,6 +22,41 @@ export default function ChessGame() {
   const onButtonClick = (color) => {
     setBackgroundColor(color);
   };
+
+  const updateAfterMove = () => {
+    const tempGame = new Chess();
+    const verboseHistory = game.history({ verbose: true });
+
+    const newFens = ["start"];
+    verboseHistory.forEach((move) => {
+      tempGame.move(move);
+      newFens.push(tempGame.fen());
+    });
+
+    setHistory(verboseHistory);
+    setFenList(newFens);
+    setCurrentMoveIndex(newFens.length - 1);
+    setFen(tempGame.fen());
+  };
+
+  const goToMove = (moveIndex) => {
+    const clampedIndex = Math.max(0, Math.min(fenList.length - 1, moveIndex));
+    setCurrentMoveIndex(clampedIndex);
+    setFen(fenList[clampedIndex]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowLeft") {
+        goToMove(currentMoveIndex - 1);
+      } else if (event.key === "ArrowRight") {
+        goToMove(currentMoveIndex + 1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentMoveIndex, fenList]);
 
   const makeRandomMove = () => {
     const possibleMoves = game.moves();
@@ -41,6 +79,7 @@ export default function ChessGame() {
     if (move === null) return;
     setFen(game.fen());
     setHistory(game.history({ verbose: true }));
+    setCurrentMoveIndex(game.history().length);
 
     if (mode === "vsComputer") {
       setTimeout(makeRandomMove, 500);
@@ -59,6 +98,9 @@ export default function ChessGame() {
         setOrientation(game.turn() === "w" ? "white" : "black");
       }
     }
+    setTimeout(() => {
+      updateAfterMove();
+    }, 100);
   };
 
   return (
@@ -89,11 +131,14 @@ export default function ChessGame() {
             Reset
           </button>
           <button
-            style={{ backgroundColor }}
+            style={{
+              backgroundColor: mode !== "local" ? "gray" : backgroundColor,
+            }}
             onClick={() => {
               setAutoOrientation(!autoOrientation);
               onButtonClick(!autoOrientation ? "green" : "red");
             }}
+            disabled={mode !== "local"}
           >
             Auto Orientacja
           </button>
