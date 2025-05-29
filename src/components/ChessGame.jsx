@@ -39,13 +39,12 @@ export default function ChessGame() {
     setFen(tempGame.fen());
   };
 
-  const goToMove = (moveIndex) => {
-    const clampedIndex = Math.max(0, Math.min(fenList.length - 1, moveIndex));
-    setCurrentMoveIndex(clampedIndex);
-    setFen(fenList[clampedIndex]);
-  };
-
   useEffect(() => {
+    const goToMove = (moveIndex) => {
+      const clampedIndex = Math.max(0, Math.min(fenList.length - 1, moveIndex));
+      setCurrentMoveIndex(clampedIndex);
+      setFen(fenList[clampedIndex]);
+    };
     const handleKeyDown = (event) => {
       if (event.key === "ArrowLeft") {
         goToMove(currentMoveIndex - 1);
