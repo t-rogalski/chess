@@ -13,6 +13,7 @@ export default function ChessGame() {
   const [orientation, setOrientation] = useState("white");
   const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
   const [fenList, setFenList] = useState(["start"]);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const [autoOrientation, setAutoOrientation] = useState(
     mode === "local" ? true : false,
@@ -58,6 +59,8 @@ export default function ChessGame() {
   }, [currentMoveIndex, fenList]);
 
   const makeRandomMove = () => {
+    if (isGameOver) return;
+
     const possibleMoves = game.moves();
     if (game.isGameOver() || possibleMoves.length === 0) return;
 
@@ -66,9 +69,12 @@ export default function ChessGame() {
     game.move(randomMove);
     setFen(game.fen());
     setHistory(game.history({ verbose: true }));
+    setCurrentMoveIndex(game.history().length);
+    updateStatus();
   };
 
   const onDrop = ({ sourceSquare, targetSquare }) => {
+    if (isGameOver) return;
     const move = game.move({
       from: sourceSquare,
       to: targetSquare,
@@ -84,18 +90,44 @@ export default function ChessGame() {
       setTimeout(makeRandomMove, 500);
     }
 
-    if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition()) {
-      alert("REMIS!");
-    }
-
-    if (game.isCheckmate()) {
-      alert(`MAT! ${game.turn() === "w" ? "Czarne" : "Białe"} wygrały!`);
-    }
-
     if (mode === "local") {
       if (autoOrientation) {
         setOrientation(game.turn() === "w" ? "white" : "black");
       }
+    }
+
+    updateStatus();
+  };
+
+  const updateStatus = () => {
+    const drawConditions = [
+      [game.isStalemate(), "Pat! Gra zakończona remisem."],
+      [
+        game.isInsufficientMaterial(),
+        "Remis z powodu braku wystarczającej ilości materiału do gry.",
+      ],
+      [
+        game.isDrawByFiftyMoves?.(),
+        "Remis z powodu pięćdziesięciu ruchów bez bicia lub ruchu pionka.",
+      ],
+      [
+        game.isThreefoldRepetition(),
+        "Remis z powodu trzykrotnego powtórzenia pozycji.",
+      ],
+    ];
+
+    for (const [condition, message] of drawConditions) {
+      if (condition) {
+        alert(message);
+        setIsGameOver(true);
+        return;
+      }
+    }
+
+    if (game.isCheckmate()) {
+      alert(`MAT! ${game.turn() === "w" ? "Czarne" : "Białe"} wygrały!`);
+      setIsGameOver(true);
+      return;
     }
     setTimeout(() => {
       updateAfterMove();
@@ -116,7 +148,7 @@ export default function ChessGame() {
         />
       </div>
       <div className="right-panel">
-        <MoveHistory history={history} />
+        <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
         <div>
           <button onClick={() => navigate("/")}>Powrót do menu</button>
           <button
@@ -125,6 +157,7 @@ export default function ChessGame() {
               setFen("start");
               setHistory([]);
               setOrientation("white");
+              setIsGameOver(false);
             }}
           >
             Reset

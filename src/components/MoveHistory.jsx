@@ -1,4 +1,4 @@
-export default function MoveHistory({ history }) {
+export default function MoveHistory({ history, currentMoveIndex }) {
   return (
     <div>
       <h2>Historia ruchów:</h2>
@@ -14,14 +14,25 @@ export default function MoveHistory({ history }) {
           <tbody>
             {Array.from({ length: Math.ceil(history.length / 2) }).map(
               (_, i) => {
+                const whiteIndex = i * 2;
+                const blackIndex = i * 2 + 1;
                 const whiteMove = history[i * 2];
                 const blackMove = history[i * 2 + 1];
+
+                const whiteHighlight =
+                  currentMoveIndex - 1 === whiteIndex ? "highlight" : "";
+                const blackHighlight =
+                  currentMoveIndex - 1 === blackIndex ? "highlight" : "";
 
                 return (
                   <tr key={i}>
                     <td className="px-1 border">{i + 1}.</td>
-                    <td className="px-2 border">{whiteMove?.san ?? ""}</td>
-                    <td className="px-2 border">{blackMove?.san ?? ""}</td>
+                    <td className={`px-2 border ${whiteHighlight}`}>
+                      {whiteMove?.san ?? ""}
+                    </td>
+                    <td className={`px-2 border ${blackHighlight}`}>
+                      {blackMove?.san ?? ""}
+                    </td>
                   </tr>
                 );
               },

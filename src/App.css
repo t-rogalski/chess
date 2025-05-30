@@ -8,6 +8,11 @@ body {
   background-color: #0f0f24;
 }
 
+.highlight {
+  background-color: hsl(240, 41%, 20%);
+  font-weight: bold;
+}
+
 button:disabled {
   background-color: #6c757d;
   cursor: default;
