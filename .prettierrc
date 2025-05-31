@@ -1,3 +1,4 @@
 {
-  "printwidth": 120
+  "printwidth": 160,
+  "singleQuote": true
 }

@@ -1,24 +1,24 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Chess } from "chess.js";
-import { Chessboard } from "react-chessboard";
-import MoveHistory from "./MoveHistory";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Chess } from 'chess.js';
+import { Chessboard } from 'react-chessboard';
+import MoveHistory from './MoveHistory';
 
 export default function ChessGame() {
   const { mode } = useParams();
   const navigate = useNavigate();
   const [game, _] = useState(new Chess());
-  const [fen, setFen] = useState("start");
+  const [fen, setFen] = useState('start');
   const [history, setHistory] = useState([]);
-  const [orientation, setOrientation] = useState("white");
+  const [orientation, setOrientation] = useState('white');
   const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
-  const [fenList, setFenList] = useState(["start"]);
+  const [fenList, setFenList] = useState(['start']);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const [autoOrientation, setAutoOrientation] = useState(
-    mode === "local" ? true : false,
+    mode === 'local' ? true : false,
   );
-  const [backgroundColor, setBackgroundColor] = useState("green");
+  const [backgroundColor, setBackgroundColor] = useState('green');
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
@@ -28,7 +28,7 @@ export default function ChessGame() {
     const tempGame = new Chess();
     const verboseHistory = game.history({ verbose: true });
 
-    const newFens = ["start"];
+    const newFens = ['start'];
     verboseHistory.forEach((move) => {
       tempGame.move(move);
       newFens.push(tempGame.fen());
@@ -47,15 +47,15 @@ export default function ChessGame() {
       setFen(fenList[clampedIndex]);
     };
     const handleKeyDown = (event) => {
-      if (event.key === "ArrowLeft") {
+      if (event.key === 'ArrowLeft') {
         goToMove(currentMoveIndex - 1);
-      } else if (event.key === "ArrowRight") {
+      } else if (event.key === 'ArrowRight') {
         goToMove(currentMoveIndex + 1);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentMoveIndex, fenList]);
 
   const makeRandomMove = () => {
@@ -70,49 +70,74 @@ export default function ChessGame() {
     setFen(game.fen());
     setHistory(game.history({ verbose: true }));
     setCurrentMoveIndex(game.history().length);
-    updateStatus();
+    result();
   };
 
-  const onDrop = ({ sourceSquare, targetSquare }) => {
+  const onPromotionCheck = (sourceSquare, targetSquare, piece) => {
+    if (!(piece === 'wP' || piece === 'bP')) return false;
+
+    const isPromotionSquare =
+      (piece === 'wP' && targetSquare[1] === '8') ||
+      (piece === 'bP' && targetSquare[1] === '1');
+
+    if (!isPromotionSquare) return false;
+
+    const moves = game.moves({ verbose: true });
+    return moves.some(
+      (move) =>
+        move.from === sourceSquare &&
+        move.to === targetSquare &&
+        move.promotion,
+    );
+  };
+
+  const onDrop = ({ sourceSquare, targetSquare, piece }) => {
     if (isGameOver) return;
     const move = game.move({
       from: sourceSquare,
       to: targetSquare,
-      promotion: "q",
+      promotion: piece[1].toLowerCase() ?? 'q',
     });
 
+    updateGameState(move);
+    if (game.isCheck()) {
+      alert(`Szach! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} są w szachu!`);
+    }
+  };
+
+  const updateGameState = (move) => {
     if (move === null) return;
     setFen(game.fen());
     setHistory(game.history({ verbose: true }));
     setCurrentMoveIndex(game.history().length);
 
-    if (mode === "vsComputer") {
+    if (mode === 'vsComputer') {
       setTimeout(makeRandomMove, 500);
     }
 
-    if (mode === "local") {
+    if (mode === 'local') {
       if (autoOrientation) {
-        setOrientation(game.turn() === "w" ? "white" : "black");
+        setOrientation(game.turn() === 'w' ? 'white' : 'black');
       }
     }
 
-    updateStatus();
+    result();
   };
 
-  const updateStatus = () => {
+  const result = () => {
     const drawConditions = [
-      [game.isStalemate(), "Pat! Gra zakończona remisem."],
+      [game.isStalemate(), 'Pat! Gra zakończona remisem.'],
       [
         game.isInsufficientMaterial(),
-        "Remis z powodu braku wystarczającej ilości materiału do gry.",
+        'Remis z powodu braku wystarczającej ilości materiału do gry.',
       ],
       [
         game.isDrawByFiftyMoves?.(),
-        "Remis z powodu pięćdziesięciu ruchów bez bicia lub ruchu pionka.",
+        'Remis z powodu pięćdziesięciu ruchów bez bicia lub ruchu pionka.',
       ],
       [
         game.isThreefoldRepetition(),
-        "Remis z powodu trzykrotnego powtórzenia pozycji.",
+        'Remis z powodu trzykrotnego powtórzenia pozycji.',
       ],
     ];
 
@@ -125,7 +150,7 @@ export default function ChessGame() {
     }
 
     if (game.isCheckmate()) {
-      alert(`MAT! ${game.turn() === "w" ? "Czarne" : "Białe"} wygrały!`);
+      alert(`MAT! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} wygrały!`);
       setIsGameOver(true);
       return;
     }
@@ -139,24 +164,25 @@ export default function ChessGame() {
       <div className="board-container">
         <Chessboard
           position={fen}
-          onPieceDrop={(sourceSquare, targetSquare) => {
-            onDrop({ sourceSquare, targetSquare });
+          onPieceDrop={(sourceSquare, targetSquare, piece) => {
+            onDrop({ sourceSquare, targetSquare, piece });
             return true;
           }}
           boardWidth={800}
           boardOrientation={orientation}
+          onPromotionCheck={onPromotionCheck}
         />
       </div>
       <div className="right-panel">
         <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
         <div>
-          <button onClick={() => navigate("/")}>Powrót do menu</button>
+          <button onClick={() => navigate('/')}>Powrót do menu</button>
           <button
             onClick={() => {
               game.reset();
-              setFen("start");
+              setFen('start');
               setHistory([]);
-              setOrientation("white");
+              setOrientation('white');
               setIsGameOver(false);
             }}
           >
@@ -164,13 +190,13 @@ export default function ChessGame() {
           </button>
           <button
             style={{
-              backgroundColor: mode !== "local" ? "gray" : backgroundColor,
+              backgroundColor: mode !== 'local' ? 'gray' : backgroundColor,
             }}
             onClick={() => {
               setAutoOrientation(!autoOrientation);
-              onButtonClick(!autoOrientation ? "green" : "red");
+              onButtonClick(!autoOrientation ? 'green' : 'red');
             }}
-            disabled={mode !== "local"}
+            disabled={mode !== 'local'}
           >
             Auto Orientacja
           </button>
