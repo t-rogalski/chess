@@ -1,11 +1,15 @@
 body {
   min-height: 100vh;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   margin: 0;
   padding: 0;
   background-color: #0f0f24;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .highlight {
@@ -37,7 +41,6 @@ button:disabled {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   min-width: 300px;
   padding: 0 2rem;
 }
@@ -46,12 +49,10 @@ button:disabled {
   color: white;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  align-self: left;
 }
 
 .table-container {
-  align-self: top;
-  max-height: 650px;
+  max-height: 70vh;
   overflow-y: auto;
   border-radius: 0.5rem;
   color: #ddd;
@@ -101,6 +102,15 @@ button {
   margin: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.controlBtn {
+  max-height: 3rem;
+  max-width: 10rem;
+}
 button:hover {
   background-color: #0056b3;
+}
+
+.controls {
+  display: flex;
 }

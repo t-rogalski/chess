@@ -25,6 +25,7 @@ export default function ChessGame() {
     setBackgroundColor(color);
   };
 
+  // Update the game state after a move, its needed to moving in history
   const updateAfterMove = () => {
     const tempGame = new Chess();
     const verboseHistory = game.history({ verbose: true });
@@ -173,59 +174,64 @@ export default function ChessGame() {
   };
 
   return (
-    <div className="container">
-      <div className="board-container">
-        <Chessboard
-          position={fen}
-          onPieceDrop={(sourceSquare, targetSquare, piece) => {
-            onDrop({ sourceSquare, targetSquare, piece });
-            return true;
-          }}
-          // boardWidth={800}
-          boardOrientation={orientation}
-          onPromotionCheck={onPromotionCheck}
-          customSquareStyles={
-            kingSquare
-              ? {
-                  [kingSquare]: {
-                    backgroundImage:
-                      'radial-gradient(circle, rgba(255, 0, 0, 0.5) 30%, transparent 70%)',
-                  },
-                }
-              : {}
-          }
-        />
-      </div>
-      <div className="right-panel">
-        <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
-        <div>
-          <button onClick={() => navigate('/')}>Powrót do menu</button>
-          <button
-            onClick={() => {
-              setGame(new Chess());
-              setFen('start');
-              setHistory([]);
-              setOrientation('white');
-              setIsGameOver(false);
-              setKingSquare(null);
-              setFenList(['start']);
-              setCurrentMoveIndex(0);
+    <div className="wrapper">
+      <div className="container">
+        <div className="board-container">
+          <Chessboard
+            position={fen}
+            onPieceDrop={(sourceSquare, targetSquare, piece) => {
+              onDrop({ sourceSquare, targetSquare, piece });
+              return true;
             }}
-          >
-            Reset
-          </button>
-          <button
-            style={{
-              backgroundColor: mode !== 'local' ? 'gray' : backgroundColor,
-            }}
-            onClick={() => {
-              setAutoOrientation(!autoOrientation);
-              onButtonClick(!autoOrientation ? 'green' : 'red');
-            }}
-            disabled={mode !== 'local'}
-          >
-            Auto Orientacja
-          </button>
+            boardOrientation={orientation}
+            onPromotionCheck={onPromotionCheck}
+            customSquareStyles={
+              kingSquare
+                ? {
+                    [kingSquare]: {
+                      backgroundImage:
+                        'radial-gradient(circle, rgba(255, 0, 0, 0.5) 30%, transparent 70%)',
+                    },
+                  }
+                : {}
+            }
+          />
+        </div>
+        <div className="right-panel">
+          <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
+          <div className="controls">
+            <button className="controlBtn" onClick={() => navigate('/')}>
+              Powrót do menu
+            </button>
+            <button
+              className="controlBtn"
+              onClick={() => {
+                setGame(new Chess());
+                setFen('start');
+                setHistory([]);
+                setOrientation('white');
+                setIsGameOver(false);
+                setKingSquare(null);
+                setFenList(['start']);
+                setCurrentMoveIndex(0);
+              }}
+            >
+              Reset
+            </button>
+            <button
+              className="controlBtn"
+              style={{
+                backgroundColor: mode !== 'local' ? 'gray' : backgroundColor,
+              }}
+              onClick={() => {
+                setAutoOrientation(!autoOrientation);
+                onButtonClick(!autoOrientation ? 'green' : 'red');
+              }}
+              disabled={mode !== 'local'}
+            >
+              Auto Orientacja
+            </button>
+          </div>
         </div>
       </div>
     </div>
