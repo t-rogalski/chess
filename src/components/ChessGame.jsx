@@ -181,7 +181,7 @@ export default function ChessGame() {
             onDrop({ sourceSquare, targetSquare, piece });
             return true;
           }}
-          boardWidth={800}
+          // boardWidth={800}
           boardOrientation={orientation}
           onPromotionCheck={onPromotionCheck}
           customSquareStyles={
