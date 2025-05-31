@@ -7,7 +7,7 @@ import MoveHistory from './MoveHistory';
 export default function ChessGame() {
   const { mode } = useParams();
   const navigate = useNavigate();
-  const [game, _] = useState(new Chess());
+  const [game, setGame] = useState(new Chess());
   const [fen, setFen] = useState('start');
   const [history, setHistory] = useState([]);
   const [orientation, setOrientation] = useState('white');
@@ -202,11 +202,14 @@ export default function ChessGame() {
           <button onClick={() => navigate('/')}>Powrót do menu</button>
           <button
             onClick={() => {
-              game.reset();
+              setGame(new Chess());
               setFen('start');
               setHistory([]);
               setOrientation('white');
               setIsGameOver(false);
+              setKingSquare(null);
+              setFenList(['start']);
+              setCurrentMoveIndex(0);
             }}
           >
             Reset
