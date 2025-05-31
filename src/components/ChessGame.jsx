@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Chess } from 'chess.js';
+import { KING, WHITE, BLACK, Chess } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import MoveHistory from './MoveHistory';
 
@@ -14,6 +14,7 @@ export default function ChessGame() {
   const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
   const [fenList, setFenList] = useState(['start']);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [kingSquare, setKingSquare] = useState(null);
 
   const [autoOrientation, setAutoOrientation] = useState(
     mode === 'local' ? true : false,
@@ -100,8 +101,20 @@ export default function ChessGame() {
     });
 
     updateGameState(move);
-    if (game.isCheck()) {
-      alert(`Szach! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} są w szachu!`);
+    kingInCheck();
+  };
+
+  const kingInCheck = () => {
+    if (game.inCheck()) {
+      const who = game.turn() === 'w' ? 'b' : 'w';
+      const king = game.findPiece(
+        who === 'w'
+          ? { type: KING, color: BLACK }
+          : { type: KING, color: WHITE },
+      );
+      setKingSquare(king[0]);
+    } else {
+      setKingSquare(null);
     }
   };
 
@@ -171,6 +184,16 @@ export default function ChessGame() {
           boardWidth={800}
           boardOrientation={orientation}
           onPromotionCheck={onPromotionCheck}
+          customSquareStyles={
+            kingSquare
+              ? {
+                  [kingSquare]: {
+                    backgroundImage:
+                      'radial-gradient(circle, rgba(255, 0, 0, 0.5) 30%, transparent 70%)',
+                  },
+                }
+              : {}
+          }
         />
       </div>
       <div className="right-panel">
