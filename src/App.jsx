@@ -1,14 +1,22 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function App() {
-  const navigate = useNavigate();
-
   return (
-    <nav className="mode-selection">
-      <button onClick={() => navigate('/game/local')}>Gra lokalna</button>
-      <button onClick={() => navigate('/game/vsComputer')}>
-        Gra z komputerem
-      </button>
-    </nav>
+    <div className="home">
+      <nav>
+        <div className="logo">
+          <img src="/chessicon.svg" alt="logo"></img>
+          <h1>Szachy</h1>
+        </div>
+        <ul className="mode-selection">
+          <li>
+            <Link to="/game/local">Gra lokalna</Link>
+          </li>
+          <li>
+            <Link to="game/vsComputer">Gra z komputerem</Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 }

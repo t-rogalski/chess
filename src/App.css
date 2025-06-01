@@ -114,3 +114,60 @@ button:hover {
 .controls {
   display: flex;
 }
+
+nav {
+  display: flex;
+  background-color: black;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo > h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: white;
+  margin: 0;
+  padding: 0;
+  margin-left: clamp(0.5rem, 2vw, 1.2rem);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logo > img {
+  margin-left: clamp(0.5rem, 2vw, 2rem);
+  width: clamp(4rem, 10vw, 5rem);
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.mode-selection {
+  display: flex;
+  width: clamp(150px, 45vw, 350px);
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  font-size: 1.5rem;
+  margin-right: clamp(0.5rem, 2vw, 2rem);
+}
+
+.mode-selection a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.mode-selection a:hover {
+  color: hsl(211, 100%, 50%);
+}
+.mode-selection a:active {
+  color: hsl(211, 100%, 40%);
+  font-weight: bold;
+}
