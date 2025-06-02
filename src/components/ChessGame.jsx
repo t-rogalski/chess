@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { KING, WHITE, BLACK, Chess } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
-import MoveHistory from './MoveHistory';
+import RightPanel from './RightPanel';
+import BoardContainer from './BoardContainer';
 
 export default function ChessGame() {
   const { mode } = useParams();
@@ -174,79 +175,31 @@ export default function ChessGame() {
   return (
     <div className="wrapper">
       <div className="container">
-        <div className="board-container">
-          <Chessboard
-            position={fen}
-            onPieceDrop={(sourceSquare, targetSquare, piece) => {
-              onDrop({ sourceSquare, targetSquare, piece });
-              return true;
-            }}
-            boardOrientation={orientation}
-            onPromotionCheck={onPromotionCheck}
-            customSquareStyles={
-              kingSquare
-                ? {
-                    [kingSquare]: {
-                      backgroundImage:
-                        'radial-gradient(circle, rgba(255, 0, 0, 0.5) 30%, transparent 70%)',
-                    },
-                  }
-                : {}
-            }
-            customDarkSquareStyle={{
-              backgroundColor: '#0056b3',
-            }}
-            customLightSquareStyle={{
-              backgroundColor: '#edeed1',
-            }}
-          />
-        </div>
-        <div className="right-panel">
-          <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
-          <div className="controls">
-            <button className="controlBtn" onClick={() => navigate('/')}>
-              Powrót do menu
-            </button>
-            <button
-              className="controlBtn"
-              onClick={() => {
-                setGame(new Chess());
-                setFen('start');
-                setHistory([]);
-                setOrientation('white');
-                setIsGameOver(false);
-                setKingSquare(null);
-                setFenList(['start']);
-                setCurrentMoveIndex(0);
-              }}
-            >
-              Reset
-            </button>
-            <button
-              className="controlBtn"
-              style={{
-                backgroundColor: mode !== 'local' ? 'gray' : backgroundColor,
-              }}
-              onClick={() => {
-                setAutoOrientation(!autoOrientation);
-                onButtonClick(!autoOrientation ? '#007bff' : '#0056b3');
-              }}
-              disabled={mode !== 'local'}
-            >
-              Auto Orientacja
-            </button>
-            <button
-              className="rotateBtn"
-              onClick={() =>
-                setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
-              }
-            >
-              <span className="material-symbols-outlined">
-                screen_rotation_up
-              </span>
-            </button>
-          </div>
-        </div>
+        <BoardContainer
+          fen={fen}
+          onDrop={onDrop}
+          orientation={orientation}
+          onPromotionCheck={onPromotionCheck}
+          kingSquare={kingSquare}
+        />
+        <RightPanel
+          history={history}
+          currentMoveIndex={currentMoveIndex}
+          setGame={setGame}
+          setFen={setFen}
+          setHistory={setHistory}
+          setOrientation={setOrientation}
+          setIsGameOver={setIsGameOver}
+          setKingSquare={setKingSquare}
+          setFenList={setFenList}
+          setCurrentMoveIndex={setCurrentMoveIndex}
+          mode={mode}
+          autoOrientation={autoOrientation}
+          setAutoOrientation={setAutoOrientation}
+          onButtonClick={onButtonClick}
+          backgroundColor={backgroundColor}
+          navigate={navigate}
+        />
       </div>
     </div>
   );
