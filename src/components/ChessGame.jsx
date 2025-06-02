@@ -16,10 +16,8 @@ export default function ChessGame() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [kingSquare, setKingSquare] = useState(null);
 
-  const [autoOrientation, setAutoOrientation] = useState(
-    mode === 'local' ? true : false,
-  );
-  const [backgroundColor, setBackgroundColor] = useState('green');
+  const [autoOrientation, setAutoOrientation] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState('#0056b3');
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
@@ -195,6 +193,12 @@ export default function ChessGame() {
                   }
                 : {}
             }
+            customDarkSquareStyle={{
+              backgroundColor: '#0056b3',
+            }}
+            customLightSquareStyle={{
+              backgroundColor: '#edeed1',
+            }}
           />
         </div>
         <div className="right-panel">
@@ -225,11 +229,21 @@ export default function ChessGame() {
               }}
               onClick={() => {
                 setAutoOrientation(!autoOrientation);
-                onButtonClick(!autoOrientation ? 'green' : 'red');
+                onButtonClick(!autoOrientation ? '#007bff' : '#0056b3');
               }}
               disabled={mode !== 'local'}
             >
               Auto Orientacja
+            </button>
+            <button
+              className="rotateBtn"
+              onClick={() =>
+                setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
+              }
+            >
+              <span className="material-symbols-outlined">
+                screen_rotation_up
+              </span>
             </button>
           </div>
         </div>

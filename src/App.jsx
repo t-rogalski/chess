@@ -15,6 +15,9 @@ export default function App() {
           <li>
             <Link to="game/vsComputer">Gra z komputerem</Link>
           </li>
+          <li>
+            <Link to="#">Analiza pozycji</Link>
+          </li>
         </ul>
       </nav>
     </div>

@@ -122,6 +122,7 @@ nav {
   align-items: center;
   padding: 1rem 0;
   color: white;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -149,7 +150,7 @@ nav {
 
 .mode-selection {
   display: flex;
-  width: clamp(150px, 45vw, 350px);
+  width: clamp(250px, 50vw, 550px);
   justify-content: space-between;
   align-items: center;
   list-style: none;
@@ -162,6 +163,7 @@ nav {
   color: white;
   font-weight: bold;
   transition: color 0.3s ease;
+  margin-right: 0.5rem;
 }
 
 .mode-selection a:hover {
@@ -170,4 +172,18 @@ nav {
 .mode-selection a:active {
   color: hsl(211, 100%, 40%);
   font-weight: bold;
+}
+
+.rotateBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .mode-selection {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
 }
