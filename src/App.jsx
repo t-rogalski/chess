@@ -13,10 +13,10 @@ export default function App() {
             <Link to="/game/local">Gra lokalna</Link>
           </li>
           <li>
-            <Link to="game/vsComputer">Gra z komputerem</Link>
+            <Link to="/game/vsComputer">Gra z komputerem</Link>
           </li>
           <li>
-            <Link to="#">Analiza pozycji</Link>
+            <Link to="/analyze">Analiza pozycji</Link>
           </li>
         </ul>
       </nav>
