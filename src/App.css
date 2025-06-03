@@ -180,10 +180,21 @@ nav {
   justify-content: center;
 }
 
+.backToMenuBtn {
+  min-width: 95px;
+}
+
 @media (max-width: 600px) {
   .mode-selection {
     flex-direction: column;
     gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
     align-items: center;
   }
 }

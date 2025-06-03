@@ -1,9 +1,10 @@
-import { Chess } from 'chess.js';
 import MoveHistory from './MoveHistory';
+import GameControls from './GameControls';
 
 export default function RightPanel({
   history,
   currentMoveIndex,
+  game,
   setGame,
   setFen,
   setHistory,
@@ -22,7 +23,28 @@ export default function RightPanel({
   return (
     <div className="right-panel">
       <MoveHistory history={history} currentMoveIndex={currentMoveIndex} />
-      <div className="controls">
+      <GameControls
+        navigate={navigate}
+        game={game}
+        setGame={setGame}
+        setFen={setFen}
+        setHistory={setHistory}
+        setOrientation={setOrientation}
+        setIsGameOver={setIsGameOver}
+        setKingSquare={setKingSquare}
+        setFenList={setFenList}
+        setCurrentMoveIndex={setCurrentMoveIndex}
+        mode={mode}
+        autoOrientation={autoOrientation}
+        setAutoOrientation={setAutoOrientation}
+        onButtonClick={onButtonClick}
+        backgroundColor={backgroundColor}
+      />
+    </div>
+  );
+}
+
+/* <div className="controls">
         <button className="controlBtn" onClick={() => navigate('/')}>
           Powrót do menu
         </button>
@@ -62,7 +84,4 @@ export default function RightPanel({
         >
           <span className="material-symbols-outlined">screen_rotation_up</span>
         </button>
-      </div>
-    </div>
-  );
-}
+      </div> */

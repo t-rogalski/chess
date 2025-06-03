@@ -185,6 +185,7 @@ export default function ChessGame() {
         <RightPanel
           history={history}
           currentMoveIndex={currentMoveIndex}
+          game={game}
           setGame={setGame}
           setFen={setFen}
           setHistory={setHistory}
