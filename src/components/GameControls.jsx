@@ -4,7 +4,6 @@ import VsComputerButtons from './VsComputerButtons';
 export default function GameControls({
   navigate,
   game,
-  setGame,
   setFen,
   setHistory,
   setOrientation,
@@ -21,7 +20,6 @@ export default function GameControls({
   return mode === 'local' ? (
     <VsLocalButtons
       navigate={navigate}
-      setGame={setGame}
       setFen={setFen}
       setHistory={setHistory}
       setOrientation={setOrientation}
@@ -38,7 +36,6 @@ export default function GameControls({
     <VsComputerButtons
       navigate={navigate}
       game={game}
-      setGame={setGame}
       setFen={setFen}
       setHistory={setHistory}
       setOrientation={setOrientation}
