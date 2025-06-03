@@ -1,6 +1,6 @@
 export default class Engine {
   constructor() {
-    this.stockfish = new Worker('./stockfish.js');
+    this.stockfish = new Worker('/stockfish.js');
     this.onMessage = (callback) => {
       this.stockfish.addEventListener('message', (e) => {
         const bestMove = e.data?.match(/bestmove\s+(\S+)/)?.[1];
@@ -11,6 +11,10 @@ export default class Engine {
     // Init engine
     this.sendMessage('uci');
     this.sendMessage('isready');
+  }
+
+  sendMessage(msg) {
+    this.stockfish.postMessage(msg);
   }
 
   evaluatePosition(fen, depth) {

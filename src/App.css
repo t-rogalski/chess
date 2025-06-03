@@ -184,6 +184,19 @@ nav {
   min-width: 95px;
 }
 
+.levelBtn {
+  background-color: #007bff;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.levelBtn:hover {
+  background-color: #0056b3;
+}
+
 @media (max-width: 600px) {
   .mode-selection {
     flex-direction: column;

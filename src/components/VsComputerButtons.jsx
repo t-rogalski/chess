@@ -1,9 +1,6 @@
-import { Chess } from 'chess.js';
-
 export default function VsComputerButtons({
   navigate,
   game,
-  setGame,
   setFen,
   setHistory,
   setOrientation,
@@ -23,7 +20,7 @@ export default function VsComputerButtons({
       <button
         className="controlBtn"
         onClick={() => {
-          setGame(new Chess());
+          game.reset();
           setFen('start');
           setHistory([]);
           setOrientation('white');

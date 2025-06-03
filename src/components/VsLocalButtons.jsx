@@ -1,8 +1,6 @@
-import { Chess } from 'chess.js';
-
 export default function VsLocalButtons({
   navigate,
-  setGame,
+  game,
   setFen,
   setHistory,
   setOrientation,
@@ -26,7 +24,7 @@ export default function VsLocalButtons({
       <button
         className="controlBtn"
         onClick={() => {
-          setGame(new Chess());
+          game.reset();
           setFen('start');
           setHistory([]);
           setOrientation('white');

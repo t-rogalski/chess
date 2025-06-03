@@ -1,14 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { KING, WHITE, BLACK, Chess } from 'chess.js';
-import { Chessboard } from 'react-chessboard';
 import RightPanel from './RightPanel';
 import BoardContainer from './BoardContainer';
+import Engine from './Engine';
+import LevelDialog from './LevelDialog';
 
 export default function ChessGame() {
   const { mode } = useParams();
   const navigate = useNavigate();
-  const [game, setGame] = useState(new Chess());
+
+  const game = useMemo(() => new Chess(), []);
+  const engine = useMemo(() => new Engine(), []);
   const [fen, setFen] = useState('start');
   const [history, setHistory] = useState([]);
   const [orientation, setOrientation] = useState('white');
@@ -16,13 +19,37 @@ export default function ChessGame() {
   const [fenList, setFenList] = useState(['start']);
   const [isGameOver, setIsGameOver] = useState(false);
   const [kingSquare, setKingSquare] = useState(null);
-
+  const [showLevelDialog, setShowLevelDialog] = useState(mode === 'vsComputer');
+  const [stockfishLevel, setStockfishLevel] = useState(1);
   const [autoOrientation, setAutoOrientation] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#0056b3');
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
   };
+
+  const handleLevelSelect = (depth) => {
+    setStockfishLevel(depth);
+    setShowLevelDialog(false);
+  };
+
+  function findBestMove() {
+    engine.evaluatePosition(game.fen(), stockfishLevel);
+    engine.onMessage(({ bestMove }) => {
+      if (bestMove) {
+        game.move({
+          from: bestMove.substring(0, 2),
+          to: bestMove.substring(2, 4),
+          promotion: bestMove.substring(4, 5),
+        });
+
+        setFen(game.fen());
+        setHistory(game.history({ verbose: true }));
+        setCurrentMoveIndex(game.history().length);
+        result();
+      }
+    });
+  }
 
   // Update the game state after a move, its needed to moving in history
   const updateAfterMove = () => {
@@ -58,21 +85,6 @@ export default function ChessGame() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentMoveIndex, fenList]);
-
-  const makeRandomMove = () => {
-    if (isGameOver) return;
-
-    const possibleMoves = game.moves();
-    if (game.isGameOver() || possibleMoves.length === 0) return;
-
-    const randomMove =
-      possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-    game.move(randomMove);
-    setFen(game.fen());
-    setHistory(game.history({ verbose: true }));
-    setCurrentMoveIndex(game.history().length);
-    result();
-  };
 
   const onPromotionCheck = (sourceSquare, targetSquare, piece) => {
     if (!(piece === 'wP' || piece === 'bP')) return false;
@@ -125,7 +137,7 @@ export default function ChessGame() {
     setCurrentMoveIndex(game.history().length);
 
     if (mode === 'vsComputer') {
-      setTimeout(makeRandomMove, 500);
+      setTimeout(findBestMove, 500);
     }
 
     if (mode === 'local') {
@@ -174,6 +186,7 @@ export default function ChessGame() {
 
   return (
     <div className="wrapper">
+      <LevelDialog open={showLevelDialog} onSelect={handleLevelSelect} />
       <div className="container">
         <BoardContainer
           fen={fen}
@@ -186,7 +199,6 @@ export default function ChessGame() {
           history={history}
           currentMoveIndex={currentMoveIndex}
           game={game}
-          setGame={setGame}
           setFen={setFen}
           setHistory={setHistory}
           setOrientation={setOrientation}
