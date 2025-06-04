@@ -9,6 +9,7 @@ export default function VsComputerButtons({
   setFenList,
   setCurrentMoveIndex,
   setAnalyze,
+  isGameOver,
 }) {
   return (
     <div className="controls">
@@ -36,6 +37,7 @@ export default function VsComputerButtons({
       </button>
       <button
         className="controlBtn"
+        disabled={isGameOver}
         onClick={() => {
           game.undo();
           game.undo();

@@ -237,6 +237,24 @@ nav {
   word-break: break-word;
 }
 
+.analyzeboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
+  margin: 1rem;
+  width: clamp(300px, 35vw, 600px);
+  aspect-ratio: 1 / 1;
+}
+
+.analyze {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  width: clamp(20px, 40vw, 600px);
+}
+
 @media (max-width: 600px) {
   .mode-selection {
     flex-direction: column;

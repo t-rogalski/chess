@@ -20,6 +20,7 @@ export default function RightPanel({
   backgroundColor,
   navigate,
   setAnalyze,
+  isGameOver,
 }) {
   return (
     <div className="right-panel">
@@ -41,6 +42,7 @@ export default function RightPanel({
         onButtonClick={onButtonClick}
         backgroundColor={backgroundColor}
         setAnalyze={setAnalyze}
+        isGameOver={isGameOver}
       />
     </div>
   );

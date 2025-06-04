@@ -230,6 +230,7 @@ export default function ChessGame() {
           backgroundColor={backgroundColor}
           navigate={navigate}
           setAnalyze={setAnalyze}
+          isGameOver={isGameOver}
         />
       </div>
     </div>

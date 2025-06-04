@@ -17,6 +17,7 @@ export default function GameControls({
   onButtonClick,
   backgroundColor,
   setAnalyze,
+  isGameOver,
 }) {
   return mode === 'local' ? (
     <VsLocalButtons
@@ -47,6 +48,7 @@ export default function GameControls({
       setFenList={setFenList}
       setCurrentMoveIndex={setCurrentMoveIndex}
       setAnalyze={setAnalyze}
+      isGameOver={isGameOver}
     />
   );
 }
