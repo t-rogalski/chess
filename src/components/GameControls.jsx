@@ -20,6 +20,7 @@ export default function GameControls({
   return mode === 'local' ? (
     <VsLocalButtons
       navigate={navigate}
+      game={game}
       setFen={setFen}
       setHistory={setHistory}
       setOrientation={setOrientation}
