@@ -39,7 +39,6 @@ export default function Analyze() {
     };
     engine.onMessage(handleMessage);
     return () => engine.stop?.();
-    // eslint-disable-next-line
   }, [engine, game]);
 
   // Analizuj po każdej zmianie pozycji
@@ -47,7 +46,6 @@ export default function Analyze() {
     if (!game.isGameOver() && !game.isDraw()) {
       engine.evaluatePosition(chessBoardPosition, 18);
     }
-    // eslint-disable-next-line
   }, [chessBoardPosition, engine, game]);
 
   function onDrop(sourceSquare, targetSquare, piece) {
