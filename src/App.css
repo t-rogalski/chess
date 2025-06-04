@@ -220,6 +220,23 @@ nav {
   color: white;
 }
 
+.analyzeContainer {
+  width: clamp(200px, 10vw, 300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem;
+  transition: min-height 0.2s;
+}
+
+.engineResult {
+  margin: 0;
+  padding: 0.5rem 0;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
 @media (max-width: 600px) {
   .mode-selection {
     flex-direction: column;

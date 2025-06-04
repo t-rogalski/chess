@@ -8,6 +8,7 @@ export default function VsComputerButtons({
   setKingSquare,
   setFenList,
   setCurrentMoveIndex,
+  setAnalyze,
 }) {
   return (
     <div className="controls">
@@ -28,6 +29,7 @@ export default function VsComputerButtons({
           setKingSquare(null);
           setFenList(['start']);
           setCurrentMoveIndex(0);
+          setAnalyze(false);
         }}
       >
         Reset

@@ -19,6 +19,7 @@ export default function RightPanel({
   onButtonClick,
   backgroundColor,
   navigate,
+  setAnalyze,
 }) {
   return (
     <div className="right-panel">
@@ -39,6 +40,7 @@ export default function RightPanel({
         setAutoOrientation={setAutoOrientation}
         onButtonClick={onButtonClick}
         backgroundColor={backgroundColor}
+        setAnalyze={setAnalyze}
       />
     </div>
   );

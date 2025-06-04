@@ -6,6 +6,7 @@ import BoardContainer from './BoardContainer';
 import Engine from './Engine';
 import LevelDialog from './LevelDialog';
 import ResultDialog from './ResultDialog';
+import AnalyzeGame from './AnalyzeGame';
 
 export default function ChessGame() {
   const { mode } = useParams();
@@ -26,6 +27,15 @@ export default function ChessGame() {
   const [backgroundColor, setBackgroundColor] = useState('#0056b3');
   const [resultMessage, setResultMessage] = useState('');
   const [analyze, setAnalyze] = useState(false);
+  const [displayGame, setDisplayGame] = useState(() => new Chess());
+
+  useEffect(() => {
+    const newGame = new Chess();
+    if (fen !== 'start') {
+      newGame.load(fen);
+    }
+    setDisplayGame(newGame);
+  }, [fen]);
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
@@ -193,8 +203,8 @@ export default function ChessGame() {
         onClose={() => setIsGameOver(false)}
         setAnalyze={setAnalyze}
       />
-      <Analyze analyze={analyze} game={game} />
       <div className="container">
+        <AnalyzeGame analyze={analyze} game={displayGame} engine={engine} />
         <BoardContainer
           fen={fen}
           onDrop={onDrop}
@@ -219,6 +229,7 @@ export default function ChessGame() {
           onButtonClick={onButtonClick}
           backgroundColor={backgroundColor}
           navigate={navigate}
+          setAnalyze={setAnalyze}
         />
       </div>
     </div>

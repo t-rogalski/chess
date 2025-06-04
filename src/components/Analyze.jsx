@@ -90,13 +90,12 @@ export default function Analyze() {
   return (
     <div style={boardWrapper}>
       <h3 className="engineResult">
-        Position Evaluation:{' '}
-        {possibleMate ? `#${possibleMate}` : positionEvaluation}
+        Ocena pozycji: {possibleMate ? `#${possibleMate}` : positionEvaluation}
         {'; '}
-        Depth: {depth}
+        Głębokość: {depth}
       </h3>
       <h5 className="engineResult">
-        Best line: <i>{bestLine.slice(0, 40)}</i> ...
+        Najlepsza linia: <i>{bestLine.slice(0, 40)}</i> ...
       </h5>
       <input
         ref={inputRef}

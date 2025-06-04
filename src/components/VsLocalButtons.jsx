@@ -12,6 +12,7 @@ export default function VsLocalButtons({
   setAutoOrientation,
   onButtonClick,
   backgroundColor,
+  setAnalyze,
 }) {
   return (
     <div className="controls">
@@ -32,6 +33,7 @@ export default function VsLocalButtons({
           setKingSquare(null);
           setFenList(['start']);
           setCurrentMoveIndex(0);
+          setAnalyze(false);
         }}
       >
         Reset

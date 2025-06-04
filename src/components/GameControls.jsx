@@ -16,6 +16,7 @@ export default function GameControls({
   setAutoOrientation,
   onButtonClick,
   backgroundColor,
+  setAnalyze,
 }) {
   return mode === 'local' ? (
     <VsLocalButtons
@@ -32,6 +33,7 @@ export default function GameControls({
       setAutoOrientation={setAutoOrientation}
       onButtonClick={onButtonClick}
       backgroundColor={backgroundColor}
+      setAnalyze={setAnalyze}
     />
   ) : (
     <VsComputerButtons
@@ -44,6 +46,7 @@ export default function GameControls({
       setKingSquare={setKingSquare}
       setFenList={setFenList}
       setCurrentMoveIndex={setCurrentMoveIndex}
+      setAnalyze={setAnalyze}
     />
   );
 }
