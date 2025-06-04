@@ -170,14 +170,15 @@ export default function ChessGame() {
       if (condition) {
         alert(message);
         setIsGameOver(true);
-        return;
       }
+      setTimeout(() => {
+        updateAfterMove();
+      }, 100);
     }
 
     if (game.isCheckmate()) {
       alert(`MAT! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} wygrały!`);
       setIsGameOver(true);
-      return;
     }
     setTimeout(() => {
       updateAfterMove();
