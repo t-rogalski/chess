@@ -1,5 +1,3 @@
-import React from 'react';
-
 const levels = {
   Łatwy: 1,
   Średni: 6,

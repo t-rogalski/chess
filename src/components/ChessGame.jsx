@@ -5,6 +5,7 @@ import RightPanel from './RightPanel';
 import BoardContainer from './BoardContainer';
 import Engine from './Engine';
 import LevelDialog from './LevelDialog';
+import ResultDialog from './ResultDialog';
 
 export default function ChessGame() {
   const { mode } = useParams();
@@ -23,6 +24,7 @@ export default function ChessGame() {
   const [stockfishLevel, setStockfishLevel] = useState(1);
   const [autoOrientation, setAutoOrientation] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#0056b3');
+  const [resultMessage, setResultMessage] = useState('');
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
@@ -164,30 +166,31 @@ export default function ChessGame() {
         game.isThreefoldRepetition(),
         'Remis z powodu trzykrotnego powtórzenia pozycji.',
       ],
+      [
+        game.isCheckmate(),
+        `MAT! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} wygrały!`,
+      ],
     ];
 
     for (const [condition, message] of drawConditions) {
       if (condition) {
-        alert(message);
+        setResultMessage(message);
         setIsGameOver(true);
       }
       setTimeout(() => {
         updateAfterMove();
       }, 100);
     }
-
-    if (game.isCheckmate()) {
-      alert(`MAT! ${game.turn() === 'w' ? 'Czarne' : 'Białe'} wygrały!`);
-      setIsGameOver(true);
-    }
-    setTimeout(() => {
-      updateAfterMove();
-    }, 100);
   };
 
   return (
     <div className="wrapper">
       <LevelDialog open={showLevelDialog} onSelect={handleLevelSelect} />
+      <ResultDialog
+        open={isGameOver}
+        result={resultMessage}
+        onClose={() => setIsGameOver(false)}
+      />
       <div className="container">
         <BoardContainer
           fen={fen}
