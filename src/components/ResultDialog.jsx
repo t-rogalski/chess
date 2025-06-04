@@ -1,14 +1,5 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-
-export default function ResultDialog({ open, result, onClose }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-
+export default function ResultDialog({ open, result, onClose, setAnalyze }) {
   if (!open) return null;
-
-  const handleAnalyze = () => {
-    navigate(`${location.pathname}/analyze`);
-  };
 
   return (
     <div className="dialog-backdrop">
@@ -22,7 +13,13 @@ export default function ResultDialog({ open, result, onClose }) {
       >
         <h2>{result}</h2>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <button className="controlBtn" onClick={handleAnalyze}>
+          <button
+            className="controlBtn"
+            onClick={() => {
+              setAnalyze(true);
+              onClose();
+            }}
+          >
             Analiza gry
           </button>
           <button className="controlBtn" onClick={onClose}>

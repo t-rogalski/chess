@@ -25,6 +25,7 @@ export default function ChessGame() {
   const [autoOrientation, setAutoOrientation] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#0056b3');
   const [resultMessage, setResultMessage] = useState('');
+  const [analyze, setAnalyze] = useState(false);
 
   const onButtonClick = (color) => {
     setBackgroundColor(color);
@@ -190,7 +191,9 @@ export default function ChessGame() {
         open={isGameOver}
         result={resultMessage}
         onClose={() => setIsGameOver(false)}
+        setAnalyze={setAnalyze}
       />
+      <Analyze analyze={analyze} game={game} />
       <div className="container">
         <BoardContainer
           fen={fen}
